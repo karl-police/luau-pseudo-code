@@ -1,0 +1,19 @@
+Function 0 (??):
+REMARK allocation: table template 1
+    1: local tbl = {
+DUPTABLE R0 1
+    2: 	value = "hello";
+LOADK R1 K2 ['hello']
+SETTABLEKS R1 R0 K0 ['value']
+    5: tbl.value = "overwritten"
+LOADK R1 K3 ['overwritten']
+SETTABLEKS R1 R0 K0 ['value']
+    7: tbl.newValue = "new value"
+LOADK R1 K4 ['new value']
+SETTABLEKS R1 R0 K5 ['newValue']
+   12: local abc = table.clone(tbl)
+GETIMPORT R1 8 [table.clone]
+MOVE R2 R0
+CALL R1 1 1
+RETURN R0 0
+

@@ -1,0 +1,21 @@
+Function 0 (??):
+    1: local test = os.time()
+GETIMPORT R0 2 [os.time]
+CALL R0 0 1
+    5: local test3 = test + test2
+ADD R1 R0 R0
+    6: local test3 = test2 + test
+ADD R2 R0 R0
+    9: print("test")
+GETIMPORT R3 4 [print]
+LOADK R4 K5 ['test']
+CALL R3 1 0
+   11: local test4 = 1
+LOADN R3 1
+   15: 	test4 = 2
+LOADN R3 2
+   19: 	test4 = 2
+LOADN R3 2
+   20: end
+RETURN R0 0
+

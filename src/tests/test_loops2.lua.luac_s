@@ -1,0 +1,13 @@
+Function 0 (??):
+    3: 		break
+JUMP L0
+    1: while true do
+JUMPBACK L0
+   11: 	print("hello")
+L0: GETIMPORT R0 1 [print]
+LOADK R1 K2 ['hello']
+CALL R0 1 0
+   12: until false
+JUMPBACK L0
+RETURN R0 0
+

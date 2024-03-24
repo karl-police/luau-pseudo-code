@@ -1,0 +1,6 @@
+Function 0 (??):
+REMARK allocation: table hash 0
+    1: local tbl = {}
+NEWTABLE R0 0 0
+RETURN R0 0
+

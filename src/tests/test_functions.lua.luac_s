@@ -1,0 +1,78 @@
+Function 0 (abc):
+    2: 	return 1
+LOADN R0 1
+RETURN R0 1
+
+Function 1 (??):
+    7: 	return 2
+LOADN R0 2
+RETURN R0 1
+
+Function 2 (??):
+   12: 	return 3
+LOADN R0 3
+RETURN R0 1
+
+Function 3 (modify):
+   20: 	test = "modified"
+LOADK R0 K0 ['modified']
+SETUPVAL R0 0
+   22: 	if (test ~= 0) then
+GETUPVAL R0 0
+JUMPXEQKN R0 K1 L0 [0]
+   23: 		print("It's not 0 anymore, value now is: ".. test)
+GETIMPORT R0 3 [print]
+LOADK R2 K4 ['It's not 0 anymore, value now is'...]
+GETUPVAL R3 0
+CONCAT R1 R2 R3
+CALL R0 1 0
+   25: end
+L0: RETURN R0 0
+
+Function 4 (arguments):
+   32: 	a += 1
+ADDK R0 R0 K0 [1]
+   33: 	b += 1
+ADDK R1 R1 K0 [1]
+   34: 	c += 1
+ADDK R2 R2 K0 [1]
+   36: 	print(a, b, c)
+GETIMPORT R3 2 [print]
+MOVE R4 R0
+MOVE R5 R1
+MOVE R6 R2
+CALL R3 3 0
+   37: end
+RETURN R0 0
+
+Function 5 (??):
+    1: function abc()
+DUPCLOSURE R0 K0 ['abc']
+SETGLOBAL R0 K1 ['abc']
+    6: local abc2 = function()
+DUPCLOSURE R0 K2 []
+   11: local returnedValue = (function()
+DUPCLOSURE R1 K3 []
+   13: end)()
+CALL R1 0 1
+   17: local test = 0
+LOADN R2 0
+REMARK allocation: closure with 1 upvalues
+   19: local function modify()
+NEWCLOSURE R3 P3
+CAPTURE REF R2
+   27: modify()
+MOVE R4 R3
+CALL R4 0 0
+   31: function arguments(a, b, c)
+DUPCLOSURE R4 K4 ['arguments']
+SETGLOBAL R4 K5 ['arguments']
+   40: arguments(1,2,3)
+GETGLOBAL R4 K5 ['arguments']
+LOADN R5 1
+LOADN R6 2
+LOADN R7 3
+CALL R4 3 0
+CLOSEUPVALS R2
+RETURN R0 0
+

@@ -1,0 +1,41 @@
+Function 0 (input):
+    4: 	test = a or 5
+ORK R1 R0 K0 [5]
+SETUPVAL R1 0
+    5: end
+RETURN R0 0
+
+Function 1 (input2):
+   12: 	test = (b and true) or 1
+JUMPIFNOT R0 L0
+LOADB R1 1
+JUMP L1
+L0: LOADN R1 1
+L1: SETUPVAL R1 0
+   13: end
+RETURN R0 0
+
+Function 2 (??):
+    1: local test = nil
+LOADNIL R0
+REMARK allocation: closure with 1 upvalues
+    3: function input(a)
+NEWCLOSURE R1 P0
+CAPTURE REF R0
+SETGLOBAL R1 K0 ['input']
+    8: input()
+GETGLOBAL R1 K0 ['input']
+CALL R1 0 0
+    9: input(1)
+GETGLOBAL R1 K0 ['input']
+LOADN R2 1
+CALL R1 1 0
+REMARK allocation: closure with 1 upvalues
+   11: function input2(b)
+NEWCLOSURE R1 P1
+CAPTURE REF R0
+SETGLOBAL R1 K1 ['input2']
+   13: end
+CLOSEUPVALS R0
+RETURN R0 0
+

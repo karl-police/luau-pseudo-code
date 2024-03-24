@@ -1,0 +1,26 @@
+Function 0 (??):
+    1: local a1 = false
+LOADB R0 0
+    2: local a2 = false
+LOADB R1 0
+    3: local a3 = false
+LOADB R2 0
+    6: if (a1) then
+JUMPIFNOT R0 L0
+    7: 	a1 = true
+LOADB R0 1
+   10: if (a2 == false) then
+L0: JUMPXEQKB R1 0 L1 NOT
+   11: 	a2 = true
+LOADB R1 1
+   15: if not (a3) then
+L1: JUMPIF R2 L2
+   16: 	a3 = true
+LOADB R2 1
+   20: if (a1 == true) then
+L2: JUMPXEQKB R0 1 L3 NOT
+   21: 	a1 = false
+LOADB R0 0
+   22: end
+L3: RETURN R0 0
+

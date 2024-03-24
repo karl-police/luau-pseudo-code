@@ -1,0 +1,43 @@
+Function 0 (Get):
+    6: 	return value
+GETIMPORT R1 1 [value]
+RETURN R1 1
+
+Function 1 (new):
+REMARK builtin setmetatable/2
+REMARK allocation: table hash 1
+   11: 	local self = setmetatable({}, test)
+NEWTABLE R1 1 0
+GETUPVAL R2 0
+FASTCALL2 61 R1 R2 L0
+GETIMPORT R0 1 [setmetatable]
+CALL R0 2 1
+   13: 	self.value = "hello"
+L0: LOADK R1 K2 ['hello']
+SETTABLEKS R1 R0 K3 ['value']
+   15: 	return self
+RETURN R0 1
+
+Function 2 (??):
+REMARK allocation: table hash 3
+    1: local test = {}
+NEWTABLE R0 4 0
+    2: test.__index = test
+SETTABLEKS R0 R0 K0 ['__index']
+    5: function test:Get()
+DUPCLOSURE R1 K1 ['Get']
+SETTABLEKS R1 R0 K2 ['Get']
+   10: function test.new()
+DUPCLOSURE R1 K3 ['new']
+CAPTURE VAL R0
+SETTABLEKS R1 R0 K4 ['new']
+   20: local newTest = test.new()
+GETTABLEKS R1 R0 K4 ['new']
+CALL R1 0 1
+   22: print(newTest:Get())
+GETIMPORT R2 6 [print]
+NAMECALL R3 R1 K2 ['Get']
+CALL R3 1 -1
+CALL R2 -1 0
+RETURN R0 0
+

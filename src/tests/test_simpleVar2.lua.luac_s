@@ -1,0 +1,7 @@
+Function 0 (??):
+    1: local test = "Hello"
+LOADK R0 K0 ['Hello']
+    3: test = "Overwritten"
+LOADK R0 K1 ['Overwritten']
+RETURN R0 0
+
