@@ -61,7 +61,8 @@ void readerDumpCurrentLocation(char* buffer, size_t offset, int deepness) {
 
 int main()
 {
-    std::ifstream file("../tests/abc.lua.luac", std::ios::binary);
+    //std::ifstream file("../tests/abc.lua.luac", std::ios::binary);
+    std::ifstream file("AnimationData.luac", std::ios::binary);
 
     if (!file.is_open()) {
         std::cerr << "Failed to open file." << std::endl;
