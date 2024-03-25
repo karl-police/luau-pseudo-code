@@ -195,12 +195,15 @@ void BytecodeParser::parseProto(Proto proto) {
             insn.SetRegisterFlags(INSN_RegisterFlags::AD);
             break;*/
 
-        /*case LOP_PREPVARARGS:
+        case LOP_PREPVARARGS:
             insn.SetRegisterFlags(INSN_RegisterFlags::A);
 
             // A is the Target Register
+            // Apparently this is unused
 
-            break;*/
+            printf("PREPVARARGS is unused apparently.\n");
+
+            break;
 
         /*case LOP_LOADKX:
             insn.SetRegisterFlags(INSN_RegisterFlags::A, true);
@@ -286,6 +289,9 @@ void BytecodeParser::parseProto(Proto proto) {
 
 
 
+/*
+    The function that starts the parsing process.
+*/
 void BytecodeParser::parseBytecode() {
     //BytecodePreparation::init(); // Prepares stuff
 
@@ -294,14 +300,14 @@ void BytecodeParser::parseBytecode() {
 
 	// We start from the Main Proto
 
-	auto mainid = mainProtoID;
+	auto mainId = mainProtoID;
 
-	Proto mainProto = protos[mainid];
+	Proto mainProto = protos[mainId];
 
     BytecodeParser::parseProto(mainProto);
 
     for (int i = 0; i < protos.size(); i++) {
-        if (i == mainid) {
+        if (i == mainId) {
             continue; // Skip
         }
 
