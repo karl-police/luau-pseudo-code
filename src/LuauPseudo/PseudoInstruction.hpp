@@ -30,7 +30,8 @@ public:
 
 
 	int RegisterFlags = 0; // Flags that define what the instruction uses.
-	uint8_t A, B, C, D, E;
+	uint8_t A, B, C;
+	int32_t D, E;
 
 
 	// Whether this Instruction has AUX

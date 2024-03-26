@@ -28,13 +28,23 @@ public:
 
 	std::map<int, PseudoRegister> registers;
 	std::map<int, std::string> test_registers;
+	std::map<int, std::string> test_registerValues;
+
+
+	std::map<int, std::string> test_upval;
+	std::map<int, std::string> test_upvalValues;
 
 
 	int declaredVars = 0;
 	int declaredUpvals = 0;
 	int declaredFuncs = 0;
 
+	uint32_t* p_currentProtoId = nullptr;
+	PseudoInstruction prevInsn;
+
 	std::string temp_out; // A test.
+
+	std::map<int, std::string> temp_protoOuts;
 
 
 
@@ -60,8 +70,8 @@ public:
 	void parseInstruction(uint32_t code);
 
 
+	std::string convertTValue_ToString(TValue value);
 
-
-	//
-	void temp_createVariable(int regStoreId, std::string strVal);
+	// Temp
+	void temp_createVariable(int regStoreId, std::string strVal, bool b_upVal = false);
 };

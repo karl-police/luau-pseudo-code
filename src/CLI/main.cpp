@@ -58,6 +58,18 @@ void readerDumpCurrentLocation(char* buffer, size_t offset, int deepness) {
     return;
 }
 
+TValue CreateEmptyTValue() {
+    TValue newValue;
+
+    newValue.value.gc = nullptr;
+    newValue.value.tbl = nullptr;
+    newValue.value.str = nullptr;
+    newValue.value.p = nullptr;
+    newValue.value.tbl = nullptr;
+
+    return newValue;
+}
+
 
 int main()
 {
@@ -222,7 +234,7 @@ int main()
                 }*/
 
                 TValue nilV;
-                nilV.tt = NULL; // won't work but we need the push_back
+                nilV.tt = LUA_TNIL; // won't work but we need the push_back
                 proto.k.push_back(nilV);
                 break;
 
@@ -232,6 +244,7 @@ int main()
                 //setbvalue(&p->k[j], v);
 
                 TValue boolV;
+                boolV.tt = LUA_TBOOLEAN;
                 boolV.value.b = (v);
 
                 proto.k.push_back(boolV);
@@ -244,6 +257,7 @@ int main()
                 //setnvalue(&p->k[j], v);
 
                 TValue numV;
+                numV.tt = LUA_TNUMBER;
                 numV.value.n = (v);
 
                 proto.k.push_back(numV);
@@ -260,6 +274,7 @@ int main()
                 //setvvalue(&p->k[j], x, y, z, w);
 
                 TValue vecV;
+                vecV.tt = LUA_TVECTOR;
                 float* i_v = vecV.value.v;
                 i_v[0] = (x);
                 i_v[1] = (y);
@@ -277,6 +292,7 @@ int main()
                 //setsvalue(L, &p->k[j], v);
 
                 TValue strV;
+                strV.tt = LUA_TSTRING;
                 strV.value.str = v;
 
                 proto.k.push_back(strV);
@@ -290,18 +306,23 @@ int main()
                 //setobj(L, &p->k[j], L->top - 1);
                 //L->top--;
 
+                TValue* tbl;
+
                 int count = iid >> 30;
 
                 int id0 = int(iid >> 20) & 1023;
                 int id1 = int(iid >> 10) & 1023;
                 int id2 = int(iid) & 1023;
 
-                if (count == 1)
-                    proto.k.push_back(proto.k[id0]); //proto.k[id0];
-                else if (count == 2)
-                    proto.k.push_back(proto.k[id1]);
-                else if (count == 3)
-                    proto.k.push_back(proto.k[id2]);
+                proto.k.push_back(proto.k[id0]); //proto.k[id0];
+
+                if (count < 2)
+                    break;
+                proto.k.push_back(proto.k[id1]);
+
+                if (count < 3)
+                    break;
+                proto.k.push_back(proto.k[id2]);
 
                 break;
             }
@@ -328,11 +349,14 @@ int main()
                     //TValue* val = luaH_set(L, h, &p->k[key]);
                     //setnvalue(val, 0.0);
 
-                    //std::cout << key << std::endl;
+                    // The thing seems to determine what's in the table
+                    // Maybe we don't need this
+                    //proto.k[key];
                 }
                 //sethvalue(L, &p->k[j], h);
 
                 TValue tblV;
+                tblV.tt = LUA_TTABLE;
                 tblV.value.tbl = &h;
 
                 proto.k.push_back(tblV);
@@ -346,8 +370,23 @@ int main()
                 //cl->preload = (cl->nupvalues > 0);
                 //setclvalue(L, &p->k[j], cl);
 
-                // TODO: Do something with this
-                // I don't know what to do with this yet.
+                TValue i_o;
+                i_o.tt = LUA_TFUNCTION;
+
+                Closure c;
+                c.isC = 0;
+                c.env = nullptr;
+                c.nupvalues = protos[fid].nups;
+                c.stacksize = proto.maxstacksize;
+                c.preload = 0;
+                c.l.p = &proto;
+
+                c.pseudoFuncId = fid; // For Pseudo
+
+                //i_o.value.gc = c;
+                i_o.value.pseudoClosure = &c;
+
+                proto.k.push_back(i_o);
                 break;
             }
 

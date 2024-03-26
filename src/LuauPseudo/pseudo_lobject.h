@@ -10,6 +10,8 @@ typedef uint32_t Instruction;
 */
 typedef union GCObject GCObject;
 
+typedef struct Closure;
+
 /*
 ** Union of all Lua values
 */
@@ -22,6 +24,8 @@ typedef union
     int b;
     float v[2]; // v[0], v[1] live here; v[2] lives in TValue::extra
     struct Table* tbl;
+
+    Closure* pseudoClosure;
 } Value;
 
 typedef struct lua_TValue
@@ -73,6 +77,40 @@ typedef struct Table
     //LuaNode* node;
     GCObject* gclist;
 } Table;
+
+
+typedef struct Closure
+{
+    CommonHeader;
+
+    uint8_t isC;
+    uint8_t nupvalues;
+    uint8_t stacksize;
+    uint8_t preload;
+
+    GCObject* gclist;
+    struct Table* env;
+
+    unsigned int pseudoFuncId;
+
+    union
+    {
+        struct
+        {
+            //lua_CFunction f;
+            //lua_Continuation cont;
+            const char* debugname;
+            TValue upvals[1];
+        } c;
+
+        struct
+        {
+            struct Proto* p;
+            TValue uprefs[1];
+        } l;
+    };
+} Closure;
+
 
 typedef struct LocVar
 {
@@ -133,3 +171,32 @@ typedef struct Proto
     int linedefined;
     int bytecodeid;
 } Proto;
+
+
+enum lua_Type
+{
+    LUA_TNIL = 0,     // must be 0 due to lua_isnoneornil
+    LUA_TBOOLEAN = 1, // must be 1 due to l_isfalse
+
+
+    LUA_TLIGHTUSERDATA,
+    LUA_TNUMBER,
+    LUA_TVECTOR,
+
+    LUA_TSTRING, // all types above this must be value types, all types below this must be GC types - see iscollectable
+
+
+    LUA_TTABLE,
+    LUA_TFUNCTION,
+    LUA_TUSERDATA,
+    LUA_TTHREAD,
+    LUA_TBUFFER,
+
+    // values below this line are used in GCObject tags but may never show up in TValue type tags
+    LUA_TPROTO,
+    LUA_TUPVAL,
+    LUA_TDEADKEY,
+
+    // the count of TValue type tags
+    LUA_T_COUNT = LUA_TPROTO
+};
