@@ -7,6 +7,9 @@ void BytecodeParser::parseInstruction(uint32_t code) {
 }
 
 
+
+// TODO: Maybe create a class that is a value that holds the declarer or something...
+
 /*
     Creates a variable
 */
