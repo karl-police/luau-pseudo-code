@@ -7,7 +7,28 @@ void BytecodeParser::parseInstruction(uint32_t code) {
 }
 
 
+/*
+    Creates a variable
+*/
+void BytecodeParser::temp_createVariable(int regStoreId, std::string strVal) {
+    auto found = this->test_registers.find(regStoreId);
 
+    if (found != this->test_registers.end()) {
+        this->temp_out.append(this->test_registers[regStoreId]);
+    }
+    else {
+        // Create it now
+        this->temp_out.append("local v" + std::to_string(this->declaredVars++));
+        this->test_registers[regStoreId] = "v" + std::to_string(this->declaredVars);
+    }
+
+    this->temp_out.append(" = ");
+    this->temp_out.append(strVal);
+    this->temp_out.append("\n");
+};
+
+
+// Parses a Proto or aka. Function or something
 void BytecodeParser::parseProto(Proto proto) {
     for (int i = 0; i < proto.sizecode; i++) {
         uint32_t code = proto.code[i];
@@ -25,15 +46,30 @@ void BytecodeParser::parseProto(Proto proto) {
         case LOP_BREAK:
             break;
 
-        /*case LOP_LOADNIL:
+        case LOP_LOADNIL:
             insn.SetRegisterFlags(INSN_RegisterFlags::A);
+
+            BytecodeParser::temp_createVariable(insn.A, "nil");
+            
             break;
 
-        case LOP_LOADB:
+        case LOP_LOADB: {
             insn.SetRegisterFlags(INSN_RegisterFlags::ABC);
-            break;
 
-        case LOP_LOADN:
+            bool boolVal = (bool)insn.B;
+            std::string str = "false";
+
+            if (boolVal == true)
+                this->temp_out.append("true");
+
+            // C is used for something specific here, dunno know
+
+            BytecodeParser::temp_createVariable(insn.A, str);
+
+            break;
+        }
+
+        /*case LOP_LOADN:
         case LOP_LOADK:
             insn.SetRegisterFlags(INSN_RegisterFlags::AD);
             break;

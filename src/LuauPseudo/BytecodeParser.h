@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <map>
 #include <string.h>
 
 #include "../Luau/Bytecode.h"
@@ -11,6 +12,7 @@
 #include "../LuauPseudo/pseudo_lobject.h"
 
 #include "PseudoInstruction.hpp"
+#include "../LuauPseudo/PseudoRegister.hpp"
 
 
 // This class stores the values and everything needed, for one file.
@@ -24,14 +26,25 @@ public:
 	uint32_t mainProtoID; // Main Proto ID
 
 
+	std::map<int, PseudoRegister> registers;
+	std::map<int, std::string> test_registers;
+
+
+	int declaredVars = 0;
+	int declaredUpvals = 0;
+	int declaredFuncs = 0;
+
+	std::string temp_out; // A test.
+
+
+
+	// Constructors
 	BytecodeParser() {}
 
 	BytecodeParser(uint8_t version, std::vector<char*> strings, std::vector<Proto> protos, uint32_t mainProtoID)
 		: version(version), strings(strings), protos(protos), mainProtoID(mainProtoID)
 	{
 	}
-
-
 
 
 	// Methods
@@ -45,4 +58,10 @@ public:
 	*	@param opCode - The OpCode value.
 	*/
 	void parseInstruction(uint32_t code);
+
+
+
+
+	//
+	void temp_createVariable(int regStoreId, std::string strVal);
 };
