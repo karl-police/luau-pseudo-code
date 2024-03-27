@@ -44,8 +44,6 @@ public:
 
 	std::string temp_out; // A test.
 
-	std::map<int, std::string> temp_protoOuts;
-
 
 
 	// Constructors

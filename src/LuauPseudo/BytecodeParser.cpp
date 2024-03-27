@@ -711,9 +711,6 @@ void BytecodeParser::parseProto(Proto proto) {
         std::cout << insn.GetDumpString() << std::endl;
 
         this->prevInsn = insn;
-
-
-        this->temp_protoOuts[*this->p_currentProtoId] = this->temp_out;
     }
 }
 
