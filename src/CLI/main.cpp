@@ -167,7 +167,8 @@ int main()
         // Move the main offset here as well
         //offset += strLength;
 
-        // Move the main offset
+        // Move the offset based on the length of the string
+        // since we just processed this information
         offset += length;
     }
 
@@ -471,8 +472,9 @@ int main()
 
             for (int j = 0; j < proto.sizeupvalues; ++j)
             {
-                readString(strings, fileBuffer, offset);
-                //proto.upvalues[j] = readString(strings, fileBuffer, offset);
+                //readString(strings, fileBuffer, offset);
+                //proto.upvalues[j] = (TString*)readString(strings, fileBuffer, offset);
+                proto.upvalues.push_back((TString*)readString(strings, fileBuffer, offset));
             }
         }
 

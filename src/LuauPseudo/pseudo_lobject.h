@@ -148,7 +148,8 @@ typedef struct Proto
     std::vector<uint8_t> lineinfo;      // for each instruction, line number as a delta from baseline
     std::vector<int> abslineinfo;       // baseline line info, one entry for each 1<<linegaplog2 instructions; allocated after lineinfo
     std::vector<struct LocVar> locvars; // information about local variables
-    TString** upvalues;     // upvalue names
+    //TString** upvalues;     // upvalue names
+    std::vector<struct TString*> upvalues;
     TString* source;
 
     TString* debugname;
