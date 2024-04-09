@@ -73,8 +73,8 @@ TValue CreateEmptyTValue() {
 
 int main()
 {
-    //std::ifstream file("../tests/abc.lua.luac", std::ios::binary);
-    std::ifstream file("AnimationClipEditor.luac", std::ios::binary);
+    std::ifstream file("../tests/abc.lua.luac", std::ios::binary);
+    //std::ifstream file("AnimationClipEditor.luac", std::ios::binary);
 
     if (!file.is_open()) {
         std::cerr << "Failed to open file." << std::endl;
@@ -107,6 +107,14 @@ int main()
     printf("Luau Bytecode Version: %d\n", (int)version);
 
 
+    // Newer versions have this
+    uint8_t typesversion = 0;
+    if (version >= 4)
+    {
+        typesversion = read<uint8_t>(fileBuffer, offset);
+    }
+
+
     // Collecting the strings
     //
     // Not sure if stringCount can ever go higher than 1, and what it would mean
@@ -116,8 +124,8 @@ int main()
 
     /*
         The string block has the following data:
-        First there's the length, that readVarInt reads through.
-        This "lenght" defines how many strings there actually are.
+        First there's a stringCount that tells how many strings there are, that readVarInt reads through.
+        The "length" is the length of one string.
 
 
         Every string is separated by a byte, this byte is at the front of the string
@@ -131,40 +139,39 @@ int main()
 
         // new offset
         size_t strOffset = 0;
-        int remainingLength = length; // store length into a new variable
+        //int remainingLength = length; // store length into a new variable
 
 
         int stringIndex = 0;
 
-        while (remainingLength > 0) {
-            uint8_t strLength = read<uint8_t>(strData, strOffset);
+        //uint8_t strLength = read<uint8_t>(strData, strOffset);
+        uint8_t strLength = length; // That's actually the length
 
-            char* str = new char[strLength];
-            memcpy(str, strData + strOffset, strLength);
-            str[strLength] = '\0'; // NULL Terminate the string
+        char* str = new char[strLength];
+        memcpy(str, strData + strOffset, strLength);
+        str[strLength] = '\0'; // NULL Terminate the string
 
-            strOffset += strLength; // Move offset
+        strOffset += strLength; // Move offset
 
-            // We have read one string
-            // remove it from the remaining ones to read
-            remainingLength -= 1;
-
-
-            strings.push_back(str); // Store string
-            //std::cout << strings[stringIndex] << std::endl;
-
-            ++stringIndex; // Increment
+        // We have read one string
+        // remove it from the remaining ones to read
+        //remainingLength -= 1;
 
 
-            // Move the main offset here as well
-            offset += strLength;
-        }
+        strings.push_back(str); // Store string
+        //std::cout << strings[stringIndex] << std::endl;
+
+        ++stringIndex; // Increment
+
+
+        // Move the main offset here as well
+        //offset += strLength;
 
         // Move the main offset
         offset += length;
     }
 
-    
+
 
     // Protos
     std::vector<Proto> protos;
@@ -185,7 +192,6 @@ int main()
         proto.nups = read<uint8_t>(fileBuffer, offset);
         proto.is_vararg = read<uint8_t>(fileBuffer, offset);
 
-        uint8_t typesversion = 0;
         if (version >= 4)
         {
             proto.flags = read<uint8_t>(fileBuffer, offset);
