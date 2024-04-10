@@ -117,14 +117,14 @@ int main()
 
     // Collecting the strings
     //
-    // Not sure if stringCount can ever go higher than 1, and what it would mean
+    // This is used to loop through the strings later on
     unsigned int stringCount = readVarInt(fileBuffer, offset);
 
     std::vector<char*> strings; // We will store strings in here;
 
     /*
         The string block has the following data:
-        First there's a stringCount that tells how many strings there are, that readVarInt reads through.
+        First there's a stringCount that tells how many strings there are, that readVarInt reads through it.
         The "length" is the length of one string.
 
 
