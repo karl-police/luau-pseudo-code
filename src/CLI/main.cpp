@@ -73,7 +73,7 @@ TValue CreateEmptyTValue() {
 
 int main()
 {
-    std::ifstream file("../tests/abc.lua.luac", std::ios::binary);
+    std::ifstream file("../tests/test_functions.lua.luac", std::ios::binary);
     //std::ifstream file("AnimationClipEditor.luac", std::ios::binary);
 
     if (!file.is_open()) {
