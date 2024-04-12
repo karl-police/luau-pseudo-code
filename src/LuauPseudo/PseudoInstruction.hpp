@@ -84,7 +84,7 @@ public:
 
 
 	// Generates a string used to print out the instruction
-	std::string GetDumpString() {
+	std::string GetDumpString(Proto* protoRef = nullptr) {
 		std::string outStr = "";
 		int RegisterFlags = this->RegisterFlags; // Check Flags
 
@@ -109,6 +109,12 @@ public:
 
 		if (this->hasAUX == true) {
 			outStr.append("\n\tAUX " + std::to_string(this->aux));
+
+			// TODO: Do this differently without func arg?
+			if (protoRef != nullptr) {
+				//auto value = protoRef->k[this->aux].value.str;
+				//outStr.append(value);
+			}
 		}
 
 		return outStr;

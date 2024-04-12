@@ -708,7 +708,7 @@ void BytecodeParser::parseProto(Proto proto) {
 
 
         // Dump out the instruction
-        std::cout << insn.GetDumpString() << std::endl;
+        std::cout << insn.GetDumpString(&proto) << std::endl;
 
         this->prevInsn = insn;
     }
